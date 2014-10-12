@@ -12,7 +12,7 @@ def isConnected(s, t, k):
 entries = list(fasta.parse())
 edges = ((a, b) for i, a in enumerate(entries)
                   for j, b in enumerate(entries)
-                    if a != b and isConnected(a[1], b[1], k))
+                    if a != b and isConnected(a[1], b[1], 3))
 
 for v1, v2 in edges:
     print v1[0], v2[0]

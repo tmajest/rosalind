@@ -1,3 +1,5 @@
+# Functions for parsing FASTA files
+
 import sys
 
 def _parseHelper(fastaInput):
@@ -19,7 +21,8 @@ def _parseHelper(fastaInput):
         else:
             sequence.append(line)
 
-    yield desc, ''.join(sequence)
+    if desc and sequence:
+        yield desc, ''.join(sequence)
 
 def parse(f=None):
     """
@@ -29,7 +32,6 @@ def parse(f=None):
 
     f = f if f else sys.stdin
     return _parseHelper(f)
-
 
 def parseStr(s):
     """

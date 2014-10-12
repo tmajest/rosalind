@@ -1,16 +1,19 @@
+# Functions for parsing FASTA files
+
 import sys
 
-def parse(f=None):
+def _parseHelper(fastaInput):
     """
-    Takes a file of FASTA format and returns a generator
-    of tuples of the form (description, sequence).
+    Helper function to parse FASTA format.
     """
-    f = f if f else sys.stdin
+
     desc, sequence = "", []
 
-    for rline in f:
+    for rline in fastaInput:
         line = rline.rstrip()
-        if line[0] == ">":
+        if not line:
+            break
+        elif line[0] == ">":
             if sequence: 
                 yield desc, ''.join(sequence)
                 sequence = []
@@ -18,4 +21,22 @@ def parse(f=None):
         else:
             sequence.append(line)
 
-    yield desc, ''.join(sequence)
+    if desc and sequence:
+        yield desc, ''.join(sequence)
+
+def parse(f=None):
+    """
+    Takes a file or stdin of FASTA format and returns a 
+    generator of tuples of the form (description, sequence).
+    """
+
+    f = f if f else sys.stdin
+    return _parseHelper(f)
+
+def parseStr(s):
+    """
+    Takes a string in FASTA format and returns a generator
+    of tuples of the form (description, sequence).
+    """
+
+    return _parseHelper(s.split("\n"))
