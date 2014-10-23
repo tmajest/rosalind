@@ -28,6 +28,7 @@ reading_frames = [dna[i:] for i in xrange(3)] + [complement[i:] for i in xrange(
 proteins = set()
 for reading_frame in reading_frames:
     for protein in dna_to_proteins(reading_frame, dna_table):
-        proteins.add(protein)
+        if protein:
+            proteins.add(protein)
 
-print "\n".join(protein for protein in proteins if protein)
+print "\n".join(proteins)
